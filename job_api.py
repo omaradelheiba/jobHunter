@@ -1,29 +1,39 @@
 from flask import Flask, request, jsonify
 from jobspy import scrape_jobs
+import traceback
 
 app = Flask(__name__)
 
 @app.route('/api/jobs', methods=['GET'])
 def get_jobs():
-    title = request.args.get('title')
-    location = request.args.get('location')
-    country = request.args.get('country')
+    title = request.args.get('title', 'Engineer')
+    location = request.args.get('location', 'Saudi Arabia')
     
     try:
+        # السيرفر بيشفط من 3 مواقع عالمية في ضربة واحدة
         jobs = scrape_jobs(
-            site_name=["linkedin", "indeed", "glassdoor", "google"],
+            site_name=["indeed", "linkedin", "glassdoor"],
             search_term=title,
             location=location,
-            results_wanted=15,
-            hours_old=720,
-            country_indeed=country
+            results_wanted=50, # هيسحب 50 وظيفة من كل موقع
+            country_indeed='Saudi Arabia' if 'Saudi Arabia' in location or 'السعودية' in location else 'Egypt'
         )
         
+        jobs_list = []
         if not jobs.empty:
-            jobs_list = jobs.fillna("غير محدد").to_dict('records')
-            return jsonify({'status': 'success', 'jobs': jobs_list})
-        else:
-            return jsonify({'status': 'success', 'jobs': []})
-            
+            for index, row in jobs.iterrows():
+                jobs_list.append({
+                    "title": str(row.get("title", "وظيفة")),
+                    "company": str(row.get("company", "جهة غير محددة")),
+                    "location": str(row.get("location", location)),
+                    "site": str(row.get("site", "منصة عالمية")),
+                    "date_posted": str(row.get("date_posted", "حديث")),
+                    "job_url": str(row.get("job_url", ""))
+                })
+                
+        return jsonify({"status": "success", "jobs": jobs_list, "total": len(jobs_list)})
     except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)})
+        return jsonify({"status": "error", "message": str(e), "trace": traceback.format_exc()})
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
