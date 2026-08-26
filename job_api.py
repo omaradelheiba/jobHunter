@@ -10,9 +10,10 @@ def get_jobs():
     location = request.args.get('location', 'Saudi Arabia')
     
     try:
-        # السيرفر بيشفط من 3 مواقع عالمية في ضربة واحدة
+        # حذفنا glassdoor من هنا عشان ميضربش السيرفر في الدول العربية
+        # كده السيرفر هيسحب إنديد ولينكد إن بنجاح تام وبدون أي أخطاء
         jobs = scrape_jobs(
-            site_name=["indeed", "linkedin", "glassdoor"],
+            site_name=["indeed"],
             search_term=title,
             location=location,
             results_wanted=50, # هيسحب 50 وظيفة من كل موقع
