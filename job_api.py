@@ -48,7 +48,7 @@ def get_jobs():
             site_name=["indeed"],
             search_term=title,
             location=location,
-            results_wanted=60,
+            results_wanted=80,
             hours_old=720,
             country_indeed=country_val
         )
