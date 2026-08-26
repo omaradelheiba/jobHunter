@@ -1,4 +1,4 @@
 flask
-jobspy
+python-jobspy
 pandas
 gunicorn
