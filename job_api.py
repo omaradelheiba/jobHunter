@@ -28,29 +28,28 @@ def get_jobs():
         
         qatar_cities = ['qatar', 'قطر', 'doha', 'al rayyan', 'al wakrah', 'umm salal', 'al khor', 'al shamal', 'al daayen', 'al-shahaniya']
         
-        iraq_cities = ['iraq', 'العراق', 'baghdad', 'basra', 'nineveh', 'erbil', 'sulaymaniyah', 'duhok', 'kirkuk', 'diyala', 'al anbar', 'babil', 'karbala', 'najaf', 'al-qādisiyyah', 'muthanna', 'dhi qar', 'maysan', 'wasit', 'saladin']
+        iraq_cities = ['iraq', 'العراق', 'baghdad', 'basra', 'nineveh', 'erbil', 'sulaymaniyah', 'duhok', 'kirkuk', 'diyala', 'al anbar', 'babil', 'karbala', 'najaf', 'al-qādisiyyah', 'muthanna', 'dhi قار', 'maysan', 'wasit', 'saladin']
 
         if any(city in loc_lower for city in egypt_cities):
             country_val = 'egypt'
         elif any(city in loc_lower for city in uae_cities):
             country_val = 'united arab emirates'
-        elif any(city in loc for city in kuwait_cities):
+        elif any(city in loc_lower for city in kuwait_cities):
             country_val = 'kuwait'
-        elif any(city in loc for city in qatar_cities):
+        elif any(city in loc_lower for city in qatar_cities):
             country_val = 'qatar'
-        elif any(city in loc for city in iraq_cities):
+        elif any(city in loc_lower for city in iraq_cities):
             country_val = 'iraq'
         else:
-            country_val = 'saudi arabia' # الافتراضي للسعودية ومدنها
+            country_val = 'saudi arabia'
         # =========================================================================
 
-        # سحب الوظائف
         jobs = scrape_jobs(
-            site_name=["indeed", "glassdoor"], # السيرفر هيجيب إنديد وجلاس دور بس عشان الموبايل بيجيب لينكد إن أسرع
+            site_name=["indeed", "glassdoor"],
             search_term=title,
             location=location,
             results_wanted=60,
-            hours_old=720, # فلتر 30 يوم من السيرفر مباشرة لتوفير الوقت
+            hours_old=720,
             country_indeed=country_val
         )
         
