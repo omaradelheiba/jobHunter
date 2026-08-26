@@ -45,7 +45,7 @@ def get_jobs():
         # =========================================================================
 
         jobs = scrape_jobs(
-            site_name=["indeed", "glassdoor"],
+            site_name=["indeed"],
             search_term=title,
             location=location,
             results_wanted=60,
