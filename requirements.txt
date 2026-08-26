@@ -1,0 +1,4 @@
+flask
+jobspy
+pandas
+gunicorn
